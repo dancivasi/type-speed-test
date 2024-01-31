@@ -1,11 +1,11 @@
 import pytest
 
-from app import Game
+from app import TestTypingSpeed
 
 
 @pytest.fixture
 def game():
-    return Game()
+    return TestTypingSpeed()
 
 
 @pytest.mark.parametrize(
@@ -17,7 +17,7 @@ def game():
     ]
 )
 def test_chosen_language(game, language_choice, expected_language_selected):
-    assert game.choose_language(language_choice) == expected_language_selected
+    assert game.choose_language() == expected_language_selected
 
 
 @pytest.mark.parametrize(
@@ -50,4 +50,5 @@ def test_get_sentence_from_english_file_or_romanian_file(game, language_choice):
                                      "razboiul rece a marcat perioada tensionata din istoria recenta",
                                      "stelele stralucesc ca diamantele pe cerul instelat"]
     }
-    assert game.get_random_sentence((language_choice)) in mocked_content[f"{language_choice}_sentences.txt"] or "No sentence for specified language"
+    game.choose_language()
+    assert game.get_random_sentence() in mocked_content[f"{language_choice}_sentences.txt"] or "No sentence for specified language"
