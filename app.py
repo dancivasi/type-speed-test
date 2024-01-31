@@ -41,4 +41,6 @@ if __name__ == "__main__":
     end = time.time()
     elapsed_time = end - start
     print(f"\nTime elapsed: {elapsed_time} seconds")
-
+    words_in_sentence = len(sentence)
+    wps = words_in_sentence/elapsed_time
+    print(f"Words per second: {wps} WPS")
