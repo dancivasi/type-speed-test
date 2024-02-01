@@ -2,45 +2,44 @@ import random
 import time
 
 
-class Game:
+class TestTypingSpeed:
+    supported_languages = ["ROMANIAN", "ENGLISH"]
 
-    @staticmethod
-    def choose_language(choice):
-        choice = choice.upper()
-        if choice == "ENGLISH":
-            return f"{choice} Language Selected."
-        else:
-            return f"{choice} Language Selected."
+    def __init__(self, language=None):
+        self.choice = language or self.choose_language()
 
-    @staticmethod
-    def get_random_sentence(choice):
-        filepath = choice.upper()
+    def choose_language(self):
+        choice = ""
+        while choice not in self.supported_languages:
+            choice = input("Choose the type test language(English/Romanian): ")
+            if choice.upper() in self.supported_languages:
+                choice = choice.upper()
+                print(f"{choice} Language Selected")
+                self.choice = choice
+                return self.choice
+            else:
+                print("INVALID option")
+
+    def start_speed_test(self):
+        filepath = self.choice.upper()
         with open(f"{filepath.lower()}_sentences.txt", "r") as file:
             sentences = file.readlines()
         random_sentence = random.choice(sentences)
         random_sentence = random_sentence.strip()
-        return random_sentence
-
-    @staticmethod
-    def type_speed_test(sentence, user_input ):
-        while user_input != sentence:
+        user_input = ""
+        while user_input != random_sentence:
+            print("Type the following sentence:")
+            print(random_sentence)
+            start = time.time()
             user_input = input()
-
-
+            end = time.time()
+            time_elapsed = end - start
+            words_in_sentence = len(random_sentence)
+            wps = words_in_sentence / time_elapsed
+            print(f"\nTime elapsed: {time_elapsed} seconds")
+            print(f"Words per second: {wps} WPS")
 
 
 if __name__ == "__main__":
-    game = Game()
-    choice = input("Choose language of the type-test:(romanian/english)")
-    sentence = game.get_random_sentence(choice)
-    print("Type the following sentence:")
-    print(sentence)
-    user_input = ""
-    start = time.time()
-    game.type_speed_test(sentence, user_input)
-    end = time.time()
-    elapsed_time = end - start
-    print(f"\nTime elapsed: {elapsed_time} seconds")
-    words_in_sentence = len(sentence)
-    wps = words_in_sentence/elapsed_time
-    print(f"Words per second: {wps} WPS")
+    game = TestTypingSpeed()
+    game.start_speed_test()
